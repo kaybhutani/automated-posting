@@ -14,7 +14,8 @@ class MailSlurp:
 
   def createInbox(self):
     try:
-        response = api_instance.create_inbox()
+        apiInstance = mailslurp_client.InboxControllerApi(self.client)
+        response = apiInstance.create_inbox()
         return {"success": True, "data": response}
     except Exception as err:
         return {"success": False, "message": str(err)}
