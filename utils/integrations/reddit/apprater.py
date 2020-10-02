@@ -5,7 +5,7 @@ class Apprater:
   def __init__(self):
     self.session = None
   
-  def postProduct(userName, userEmail, title, website, description, tags):
+  def postProduct(self, userName, userEmail, title, website, description, tags):
     tagsString = ""
     for tag in tags:
       tagsString+= tag + ","
@@ -28,3 +28,8 @@ class Apprater:
     getResponse = self.session.get('https://apprater.net/add/')
     postResponse = self.session.post('https://apprater.net/add/', payload)
     self.session.close()
+    
+    # manually check for successful posting since API returns html not json
+    if str(postResponse.content).find("Thank you") > -1:
+      return {"success": True}
+    return {"success": False}
