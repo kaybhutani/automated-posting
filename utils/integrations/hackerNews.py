@@ -27,6 +27,18 @@ class HackerNews:
     "pw": userPassword}
     postResponse = self.session.post(homePageUrl, payload)
     postPageResponse = self.session.get(homePageUrl)
+    soup = BeautifulSoup(postResponse.text)
+    opTag = None
+    htmlTagRes = soup.find("html")
+    
+    if htmlTagRes:
+      opTag = htmlTagRes.get("op")
+
+    if opTag == 'news':
+      return {"success": True}
+
+    return {"success": False}
+
 
 
   def loginUser(self, userName = defaultHackernewsId, userPassword = defaultHackernewsPassword):
