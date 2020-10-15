@@ -11,7 +11,7 @@ load_dotenv()
 
 defaultHackernewsId = os.environ.get("HACKERNEWS_LOGIN_ID")
 defaultHackernewsPassword = os.environ.get("HACKERNEWS_LOGIN_PASSWORD")
-
+  
 
 class HackerNews:
 

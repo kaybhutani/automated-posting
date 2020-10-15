@@ -36,5 +36,5 @@ class LaunchingNext:
     submitProductResponse = self.session.post(submitProductUrl, payload)
     
     # since there is no check for wrong input on website
-    return {"success": True}
+    return {"success": True, "message": "Submitted startup for review"}
 

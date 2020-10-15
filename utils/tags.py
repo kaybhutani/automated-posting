@@ -1,10 +1,10 @@
 tags = {
-  "saas": ["reddit"],
-  "b2b": ["reddit"],
-  "b2c": ["reddit"],
-  "design": ["reddit"],
-  "api": ["reddit"],
-  "newsletter": ["reddit"],
-  "tech": ["reddit"],
-  "cloud": ["reddit"]
-  }
+    "saas": {"post": ["reddit", "hackernews", "apprater", "launchingnext", "robingood", "snapmunk"], "ecommerce": []},
+    "b2b": {"post": ["reddit", "hackernews", "apprater", "launchingnext", "robingood", "snapmunk"], "ecommerce": []},
+    "b2c": {"post": ["reddit", "hackernews", "apprater", "launchingnext", "robingood", "snapmunk"], "ecommerce": []},
+    "design": {"post": ["reddit", "hackernews", "apprater", "launchingnext", "robingood", "snapmunk"], "ecommerce": []},
+    "api": {"post": ["reddit", "hackernews", "apprater", "launchingnext", "robingood", "snapmunk"]},
+    "newsletter": {"post": ["reddit", "hackernews", "apprater", "launchingnext", "robingood", "snapmunk"], "ecommerce": []},
+    "tech": {"post": ["reddit", "hackernews", "apprater", "launchingnext", "robingood", "snapmunk"], "ecommerce": []},
+    "cloud": {"post": ["reddit", "hackernews", "apprater", "launchingnext", "robingood", "snapmunk"], "ecommerce": []}
+}
