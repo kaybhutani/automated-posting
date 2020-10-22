@@ -64,7 +64,7 @@ class CraigsList:
     email = getEmailResponse.get("email")
     emailBody = email.get("body")
     verifyUrl = self.getVerifyUrl(emailBody)
-    print(verifyUrl)    
+    
     if verifyUrl != None:
       return {"success": True}
     return {"success": False}
