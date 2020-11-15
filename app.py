@@ -12,7 +12,7 @@ from utils.integrations.craigslist import CraigsList
 
 if __name__ == "__main__":
   instance = CraigsList()
-  # res = instance.signUp('0c00d0fe-1ce6-44fe-ab7d-9da6da85a8ad@mailslurp.com')
+  # res = instance.signUp('9ca0b804-0834-4c6f-a162-bf976231d0de@mailslurp.com')
   # print(res)
-  res2 = instance.verifyAccount('0c00d0fe-1ce6-44fe-ab7d-9da6da85a8ad@mailslurp.com')
+  res2 = instance.verifyAccount('9ca0b804-0834-4c6f-a162-bf976231d0de@mailslurp.com')
   print(res2)

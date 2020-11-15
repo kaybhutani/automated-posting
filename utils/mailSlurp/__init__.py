@@ -24,6 +24,19 @@ class MailSlurp:
     except Exception as err:
         return {"success": False, "message": str(err)}
 
+  def emptyInbox(self, inboxId):
+    
+    apiInstance = mailslurp_client.CommonActionsControllerApi(self.client)
+    err = None
+    try:
+      # Delete all emails in an inbox
+      api_instance.empty_inbox(inbox_id)
+      return {'success': True}
+    except Exception as error:
+      print(err)
+      err = error
+    return {'success': False, 'message': str(err)}
+
   def getEmail(self, id):
     # using REST API coz mailSlurp client doesn't support reading mails yet
     header = {
@@ -44,6 +57,7 @@ class MailSlurp:
       return {"success": True, "emails": emails}
 
     except Exception as err:
+      print(err)
       return {"success": False, "message": str(err)}
 
 

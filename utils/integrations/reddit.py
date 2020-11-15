@@ -16,7 +16,7 @@ class Reddit:
 
   def postSubReddit(self, redditThread, message):
     try:
-      obj = self.client.subreddit("AmongUs").submit(message, url="https://fb.com")
+      obj = self.client.subreddit(redditThread).submit(message)
       return {"success": True, "submissionId": obj.id}
       return redditClientSecret
     except Exception as err:

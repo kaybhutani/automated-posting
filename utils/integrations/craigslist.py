@@ -6,6 +6,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
 from utils.mailSlurp import MailSlurp
 import bs4
+import time
+
+chromeDriverPath = "/home/kartikay/Desktop/chromedriver"
 
 class CraigsList:
 
@@ -13,14 +16,19 @@ class CraigsList:
     self.session = None
   
   def signUp (self, userEmail):
+    self.userEmail = userEmail
+    if userEmail.find('@') != -1:
+      userEmail = userEmail.split('@')[0]
+    mailSlurpInstance = MailSlurp()
+    mailSlurpInstance.emptyInbox(userEmail)
+    
     try:
-      with webdriver.Chrome("/home/kartikay/Desktop/chromedriver") as driver:
+      with webdriver.Chrome(chromeDriverPath) as driver:
         wait = WebDriverWait(driver, 10)
         driver.get("https://accounts.craigslist.org/login?rp=%2Flogin%2Fhome&rt=L")
-        import time
         time.sleep(2)
         inp = driver.find_elements_by_name("emailAddress")[0]
-        inp.send_keys(userEmail)
+        inp.send_keys(self.userEmail)
         inp.send_keys(Keys.RETURN)
         return {"success": True}
     except Exception as err:
@@ -64,10 +72,25 @@ class CraigsList:
     email = getEmailResponse.get("email")
     emailBody = email.get("body")
     verifyUrl = self.getVerifyUrl(emailBody)
-    
-    if verifyUrl != None:
-      return {"success": True}
+    print(verifyUrl)
+    if verifyUrl == None:
+      return {"success": False, 'message': 'Invalid verify url'}
+
+    try:
+      with webdriver.Chrome(chromeDriverPath) as driver:
+        wait = WebDriverWait(driver, 10)
+        driver.get(verifyUrl)
+        time.sleep(2)
+        passwordlessBtn = driver.find_element_by_class_name('accountform-btn')[0]
+        passwordlessBtn.click()
+        return {"success": True}
+    except Exception as err:
+      print(err)
     return {"success": False}
+    
+    
+
+
 
 
 
