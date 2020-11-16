@@ -22,6 +22,8 @@ class CraigsList:
 
   def __init__(self):
     self.session = None
+    self.driver = webdriver.Chrome(chromeDriverPath)
+    wait = WebDriverWait(self.driver, 10)
   
   def signUp (self, userEmail):
     self.userEmail = userEmail
@@ -96,8 +98,22 @@ class CraigsList:
       print(err)
     return {"success": False}
     
-  # def login(self, emailId = defaultCraigsListId, password = defaultCraigsListPassword):
-    
+  def login(self, emailId = defaultCraigsListId, password = defaultCraigsListPassword):
+    loginUrl = 'https://accounts.craigslist.org/login' 
+    self.driver.get(loginUrl)
+    time.sleep(2)
+    emailInput = self.driver.find_elements_by_name("inputEmailHandle")[0]
+    emailInput.send_keys(emailId)
+    passwordInput = self.driver.find_elements_by_name("inputPassword")[0]
+    passwordInput.send_keys(password)
+    passwordInput.send_keys(Keys.RETURN)
+
+  def post(self):
+    postUrl = 'https://post.craigslist.org/?s=type'
+    self.driver.get(postUrl)
+    time.sleep(2)
+    selectionList = self.driver.find_elements_by_class_name("selection-list")
+    print(selectionList[0].content)
 
 
 
