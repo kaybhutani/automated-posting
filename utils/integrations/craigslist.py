@@ -7,6 +7,14 @@ from selenium.webdriver.support.expected_conditions import presence_of_element_l
 from utils.mailSlurp import MailSlurp
 import bs4
 import time
+from dotenv import load_dotenv
+import os
+
+# Loading env variables
+load_dotenv()
+
+defaultCraigsListId = os.environ.get('CRAIGSLIST_LOGIN_ID')
+defaultCraigsListPassword = os.environ.get('CRAIGSLIST_LOGIN_PASSWORD')
 
 chromeDriverPath = "/home/kartikay/Desktop/chromedriver"
 
@@ -88,6 +96,7 @@ class CraigsList:
       print(err)
     return {"success": False}
     
+  # def login(self, emailId = defaultCraigsListId, password = defaultCraigsListPassword):
     
 
 
