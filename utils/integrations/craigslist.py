@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
+from selenium.webdriver.support.ui import Select
 from utils.mailSlurp import MailSlurp
 import bs4
 import time
@@ -108,12 +109,25 @@ class CraigsList:
     passwordInput.send_keys(password)
     passwordInput.send_keys(Keys.RETURN)
 
-  def post(self):
+  def post(self, city='delhi'):
+    # cookies = {'name': 'cl_def_hp', 'value': 'delhi'}
+    # self.driver.add_cookie(cookies)
+
     postUrl = 'https://post.craigslist.org/?s=type'
     self.driver.get(postUrl)
     time.sleep(2)
-    selectionList = self.driver.find_elements_by_class_name("selection-list")
-    print(selectionList[0].content)
+    
+    # select city part
+    selectCityElement = self.driver.find_element_by_class_name('ui-selectmenu-button')
+    selectCityElement.click()
+    options = self.driver.find_elements_by_class_name('ui-menu-item')
+    print(len(options))
+    for option in options:
+      print(option.text)
+      if option.text.find(city) > -1:
+        option.click()
+        break
+    self.driver.find_element_by_name('go').click()
 
 
 
