@@ -175,8 +175,13 @@ class CraigsList:
     # submit post data
     self.driver.find_element_by_name('go').click()
 
-    
-    
+    # images part
+    # skipping image upload for now
+    self.driver.find_elements_by_name('go')[1].click()
+
+    # publish ad page
+    # submit once more to publish
+    # self.driver.find_element_by_name('go').click()
 
     
     
