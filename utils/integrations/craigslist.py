@@ -133,10 +133,12 @@ class CraigsList:
     except Exception as error:
       print(error)
     return {'success': False}
-  def post(self, postType = 'service offered', postCategory = 'computer services', city='delhi'):
+  def post(self, postType = 'service offered', postCategory = 'computer services', postTitle = '', postalCode = '', city='delhi', postDescription = ''):
     # cookies = {'name': 'cl_def_hp', 'value': 'delhi'}
     # self.driver.add_cookie(cookies)
     selectCityResponse = self.selectCity(city=city)
+
+    # select post type
 
     postingTypes = self.driver.find_elements_by_class_name('start-of-grouping')
 
@@ -145,12 +147,35 @@ class CraigsList:
         postingType.click()
         break
 
+    # select category
+
     categories = self.driver.find_elements_by_class_name('option-label')
-    
+      
     for category in categories:
       if category.text.find(postCategory) > -1:
         category.click()
         break
+
+  
+    # add post details
+
+    # fetching input elements
+    postingTitle = self.driver.find_element_by_name('PostingTitle')
+    postingCity = self.driver.find_element_by_name('geographic_area')
+    postingPostalCode = self.driver.find_element_by_name('postal')
+    postingDescription = self.driver.find_element_by_name('PostingBody')
+    
+    # send details
+
+    postingTitle.send_keys(postTitle)
+    postingCity.send_keys(city)
+    postingPostalCode.send_keys(postalCode)
+    postingDescription.send_keys(postDescription)
+
+    # submit post data
+    self.driver.find_element_by_name('go').click()
+
+    
     
 
     
