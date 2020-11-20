@@ -133,7 +133,7 @@ class CraigsList:
     except Exception as error:
       print(error)
     return {'success': False}
-  def post(self, postingType = 'service offered', city='delhi'):
+  def post(self, postType = 'service offered', postCategory = 'computer services', city='delhi'):
     # cookies = {'name': 'cl_def_hp', 'value': 'delhi'}
     # self.driver.add_cookie(cookies)
     selectCityResponse = self.selectCity(city=city)
@@ -141,9 +141,17 @@ class CraigsList:
     postingTypes = self.driver.find_elements_by_class_name('start-of-grouping')
 
     for postingType in postingTypes:
-      if postingType.text.find(postingType) > -1:
+      if postingType.text.find(postType) > -1:
         postingType.click()
         break
+
+    categories = self.driver.find_elements_by_class_name('option-label')
+    
+    for category in categories:
+      if category.text.find(postCategory) > -1:
+        category.click()
+        break
+
     
     
 
