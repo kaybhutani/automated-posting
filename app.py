@@ -15,4 +15,4 @@ if __name__ == "__main__":
   # res = instance.signUp('9ca0b804-0834-4c6f-a162-bf976231d0de@mailslurp.com')
   # print(res)
   # instance.login()
-  instance.post()
+  instance.post(city='bangalore')

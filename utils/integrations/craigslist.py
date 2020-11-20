@@ -109,25 +109,43 @@ class CraigsList:
     passwordInput.send_keys(password)
     passwordInput.send_keys(Keys.RETURN)
 
-  def post(self, city='delhi'):
+  def selectCity(self, city):
+    print('City: {}'.format(city))
+    try:
+      postUrl = 'https://post.craigslist.org/'
+      self.driver.get(postUrl)
+      time.sleep(2)
+      
+      # select city part
+      selectCityElement = self.driver.find_element_by_class_name('ui-selectmenu-button')
+      selectCityElement.click()
+      options = self.driver.find_elements_by_class_name('ui-menu-item')
+      print(len(options))
+      for option in options:
+        print(option.text)
+        if option.text.find(city) > -1:
+          option.click()
+          break
+      self.driver.find_element_by_name('go').click()
+      
+      return {'success': True}
+
+    except Exception as error:
+      print(error)
+    return {'success': False}
+  def post(self, postingType = 'service offered', city='delhi'):
     # cookies = {'name': 'cl_def_hp', 'value': 'delhi'}
     # self.driver.add_cookie(cookies)
+    selectCityResponse = self.selectCity(city=city)
 
-    postUrl = 'https://post.craigslist.org/?s=type'
-    self.driver.get(postUrl)
-    time.sleep(2)
-    
-    # select city part
-    selectCityElement = self.driver.find_element_by_class_name('ui-selectmenu-button')
-    selectCityElement.click()
-    options = self.driver.find_elements_by_class_name('ui-menu-item')
-    print(len(options))
-    for option in options:
-      print(option.text)
-      if option.text.find(city) > -1:
-        option.click()
+    postingTypes = self.driver.find_elements_by_class_name('start-of-grouping')
+
+    for postingType in postingTypes:
+      if postingType.text.find(postingType) > -1:
+        postingType.click()
         break
-    self.driver.find_element_by_name('go').click()
+    
+    
 
 
 
