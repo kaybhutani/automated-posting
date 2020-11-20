@@ -132,53 +132,80 @@ class CraigsList:
 
     except Exception as error:
       print(error)
-    return {'success': False}
+      return {'success': False, 'message': str(error)}
+
+
+  def selectPostType(self, postType):
+    try:
+
+      postingTypes = self.driver.find_elements_by_class_name('start-of-grouping')
+
+      for postingType in postingTypes:
+        if postingType.text.find(postType) > -1:
+          postingType.click()
+          break
+      return {'success': True}
+    except Exception as error:
+      print(error)
+      return {'success': False, 'message': str(error)}
+
+  def selectCategory(self, postCategory):
+    try:
+      categories = self.driver.find_elements_by_class_name('option-label')
+        
+      for category in categories:
+        if category.text.find(postCategory) > -1:
+          category.click()
+          break
+      return {'success': True}
+    except Exception as error:
+      print(error)
+      return {'success': False, 'message': str(error)}
+
+  def addPostDetails(self, postTitle, postalCode, city, postDescription):
+    try:
+      # fetching input elements
+      postingTitle = self.driver.find_element_by_name('PostingTitle')
+      postingCity = self.driver.find_element_by_name('geographic_area')
+      postingPostalCode = self.driver.find_element_by_name('postal')
+      postingDescription = self.driver.find_element_by_name('PostingBody')
+      
+      # send details
+
+      postingTitle.send_keys(postTitle)
+      postingCity.send_keys(city)
+      postingPostalCode.send_keys(postalCode)
+      postingDescription.send_keys(postDescription)
+
+      # submit post data
+      self.driver.find_element_by_name('go').click()
+      return {'success': True}
+    except Exception as error:
+      print(error)
+      return {'success': False, 'message': str(error)}
+
   def post(self, postType = 'service offered', postCategory = 'computer services', postTitle = '', postalCode = '', city='delhi', postDescription = ''):
     # cookies = {'name': 'cl_def_hp', 'value': 'delhi'}
     # self.driver.add_cookie(cookies)
     selectCityResponse = self.selectCity(city=city)
 
     # select post type
-
-    postingTypes = self.driver.find_elements_by_class_name('start-of-grouping')
-
-    for postingType in postingTypes:
-      if postingType.text.find(postType) > -1:
-        postingType.click()
-        break
+    self.selectPostType(postType)
+    
 
     # select category
-
-    categories = self.driver.find_elements_by_class_name('option-label')
-      
-    for category in categories:
-      if category.text.find(postCategory) > -1:
-        category.click()
-        break
-
+    self.selectCategory(postCategory)
   
     # add post details
-
-    # fetching input elements
-    postingTitle = self.driver.find_element_by_name('PostingTitle')
-    postingCity = self.driver.find_element_by_name('geographic_area')
-    postingPostalCode = self.driver.find_element_by_name('postal')
-    postingDescription = self.driver.find_element_by_name('PostingBody')
-    
-    # send details
-
-    postingTitle.send_keys(postTitle)
-    postingCity.send_keys(city)
-    postingPostalCode.send_keys(postalCode)
-    postingDescription.send_keys(postDescription)
-
-    # submit post data
-    self.driver.find_element_by_name('go').click()
+    self.addPostDetails(postTitle, postalCode, city, postDescription)
 
     # images part
     # skipping image upload for now
-    self.driver.find_elements_by_name('go')[1].click()
-
+    try:
+      self.driver.find_elements_by_name('go')[1].click()
+    except expression as identifier:
+      pass
+    
     # publish ad page
     # submit once more to publish
     # self.driver.find_element_by_name('go').click()
