@@ -151,6 +151,7 @@ class CraigsList:
       if category.text.find(postCategory) > -1:
         category.click()
         break
+    
 
     
     
