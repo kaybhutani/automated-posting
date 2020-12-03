@@ -203,9 +203,27 @@ class CraigsList:
       return {'success': False, 'message': str(error)}
 
 
-  def post(self, postType = 'service offered', postCategory = 'computer services', postTitle = '', postalCode = '', city='delhi', postDescription = ''):
+  def post(self, postType, postCategory, postTitle = '', postalCode = '', city='delhi', postDescription = ''):
     # cookies = {'name': 'cl_def_hp', 'value': 'delhi'}
     # self.driver.add_cookie(cookies)
+    
+    # check postType and postCategory
+
+    postType = clDefaultTypes.get(postType)
+    
+    # validate type and categories
+    if not postType:
+      print('Invalid Post type')
+      return {'success': False, 'message': 'Invalid Post type'}
+    
+    if postCategory > len(clDefaultCategories.get(postType)):
+      print('Invalid Post category')
+      return {'success': False, 'message': 'Invalid Post category'}
+    
+    # category int to string
+    postCategory = clDefaultCategories.get(postType)[postCategory]
+
+
     selectCityResponse = self.selectCity(city=city)
 
     # select post type
