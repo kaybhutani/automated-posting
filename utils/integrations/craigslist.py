@@ -18,7 +18,9 @@ clDefaultTypes = {
 }
 
 clDefaultCategories = {
-  # 'EVENT_OR_CLASS': 
+  'SERVICE': ["automotive services", "beauty services", "cell phone / mobile services", "computer services", "creative services", "cycle services", "event services", "farm & garden services", "financial services", "household services", "labor / hauling / moving", "legal services", "lessons & tutoring", "marine services", "pet services", "real estate services", "skilled trade services", "small biz ads", "travel/vacation services", "writing / editing / translation"],
+  'COMMUNITY': ["activity partners (please do not post personals on craigslist)", "artists", "childcare", "general community (no politics here please)", "groups", "local news and views (no national or international issues here please)", "lost & found", "missed connections", "musicians", "pets (no animal sales or breeding -- rehoming with…ption fee is ok -- info on free to good home ads)", "politics", "rants & raves", "rideshare", "volunteers"],
+  'EVENT_OR_CLASS': ["I'm selling a small number of tickets to an event", "My business is having a sale", "I'm offering an event-related service (rentals, transportation, etc.)", "I'm advertising a garage sale, estate sale, moving sale, flea market, or other non-corporate sale", "I'm advertising a class or training session", "I'm advertising an event, other than the above"]
 
 }
 
@@ -228,7 +230,7 @@ class CraigsList:
       if imageBtn.text.find('image') >-1:
         imageBtn.click()
     except Exception as err:
-      pass
+      print('Error when skipping images: ', err)
     
     # publish ad page
     # submit once more to publish
