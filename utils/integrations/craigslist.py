@@ -11,6 +11,18 @@ import time
 from dotenv import load_dotenv
 import os
 
+clDefaultTypes = {
+  'EVENT_OR_CLASS': 'event / class',
+  'SERVICE': 'service offered',
+  'COMMUNITY': 'community'
+}
+
+clDefaultCategories = {
+  # 'EVENT_OR_CLASS': 
+
+}
+
+
 # Loading env variables
 load_dotenv()
 
@@ -110,7 +122,7 @@ class CraigsList:
     passwordInput.send_keys(Keys.RETURN)
 
   def selectCity(self, city):
-    print('City: {}'.format(city))
+    print('Selecting City: {}'.format(city))
     try:
       postUrl = 'https://post.craigslist.org/'
       self.driver.get(postUrl)
@@ -133,14 +145,16 @@ class CraigsList:
     except Exception as error:
       print(error)
       return {'success': False, 'message': str(error)}
-
+  
 
   def selectPostType(self, postType):
+    print('Selecting post type: ', postType)
     try:
 
-      postingTypes = self.driver.find_elements_by_class_name('start-of-grouping')
-
+      postingTypes = self.driver.find_elements_by_tag_name('li')
+      print(len(postingTypes))
       for postingType in postingTypes:
+        print(postingType.text)
         if postingType.text.find(postType) > -1:
           postingType.click()
           break
@@ -150,8 +164,9 @@ class CraigsList:
       return {'success': False, 'message': str(error)}
 
   def selectCategory(self, postCategory):
+    print('Selecting post category: ', postCategory)
     try:
-      categories = self.driver.find_elements_by_class_name('option-label')
+      categories = self.driver.find_elements_by_tag_name('label')
         
       for category in categories:
         if category.text.find(postCategory) > -1:
@@ -184,26 +199,29 @@ class CraigsList:
       print(error)
       return {'success': False, 'message': str(error)}
 
+
   def post(self, postType = 'service offered', postCategory = 'computer services', postTitle = '', postalCode = '', city='delhi', postDescription = ''):
     # cookies = {'name': 'cl_def_hp', 'value': 'delhi'}
     # self.driver.add_cookie(cookies)
     selectCityResponse = self.selectCity(city=city)
 
     # select post type
-    self.selectPostType(postType)
-    
+    postTypeSelectResponse = self.selectPostType(postType)
+    print(postTypeSelectResponse)
 
     # select category
-    self.selectCategory(postCategory)
-  
+    postCategorySelectResponse = self.selectCategory(postCategory)
+    print(postCategorySelectResponse)
+
     # add post details
-    self.addPostDetails(postTitle, postalCode, city, postDescription)
+    addPostDetailsResponse = self.addPostDetails(postTitle, postalCode, city, postDescription)
+    print(addPostDetailsResponse)
 
     # images part
     # skipping image upload for now
     try:
       self.driver.find_elements_by_name('go')[1].click()
-    except expression as identifier:
+    except Exception as err:
       pass
     
     # publish ad page
