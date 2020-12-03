@@ -180,7 +180,7 @@ class CraigsList:
       print(error)
       return {'success': False, 'message': str(error)}
 
-  def addPostDetails(self, postTitle, postalCode, city, postDescription):
+  def addPostDetails(self, postType, postTitle, postalCode, city, postDescription, **kwargs):
     try:
       # fetching input elements
       postingTitle = self.driver.find_element_by_name('PostingTitle')
@@ -194,6 +194,24 @@ class CraigsList:
       postingCity.send_keys(city)
       postingPostalCode.send_keys(postalCode)
       postingDescription.send_keys(postDescription)
+      
+      # If postType == EVENT, send more details like price, ticket count, venue etc here
+      if postType == clDefaultTypes.get('EVENT_OR_CLASS'):
+        
+        if kwargs.get('ticketPrice')==None or kwargs.get('ticketNumber') == None:
+          print('Ticket number or price not provided, using default price 0 and number 1000')
+          # return {'success': False, 'message': 'Ticket price or number missing for event.'}
+        tempTicketPrice = kwargs.get('ticketPrice') or 0
+        tempTicketNumber = kwargs.get('ticketNumber') or 999
+        tempVenueName = kwargs.get('venueName') or 'Yet to be decided.'
+        print('Event Category, adding more details')
+        ticketPrice = self.driver.find_element_by_name('price')
+        ticketNumber = self.driver.find_element_by_name('number_available')
+        venueName = self.driver.find_element_by_name('venue_name')
+        
+        ticketPrice.send_keys(tempTicketPrice)
+        ticketNumber.send_keys(tempTicketNumber)
+        venueName.send_keys(tempVenueName)
 
       # submit post data
       self.driver.find_element_by_name('go').click()
@@ -203,25 +221,26 @@ class CraigsList:
       return {'success': False, 'message': str(error)}
 
 
-  def post(self, postType, postCategory, postTitle = '', postalCode = '', city='delhi', postDescription = ''):
+  def post(self, postType, postCategory, postTitle = '', postalCode = '', city='delhi', postDescription = '', **kwargs):
     # cookies = {'name': 'cl_def_hp', 'value': 'delhi'}
     # self.driver.add_cookie(cookies)
     
     # check postType and postCategory
-
+    tempPostType = postType
     postType = clDefaultTypes.get(postType)
-    
+  
+
     # validate type and categories
     if not postType:
       print('Invalid Post type')
       return {'success': False, 'message': 'Invalid Post type'}
     
-    if postCategory > len(clDefaultCategories.get(postType)):
+    if postCategory > len(clDefaultCategories.get(tempPostType)):
       print('Invalid Post category')
       return {'success': False, 'message': 'Invalid Post category'}
     
     # category int to string
-    postCategory = clDefaultCategories.get(postType)[postCategory]
+    postCategory = clDefaultCategories.get(tempPostType)[postCategory]
 
 
     selectCityResponse = self.selectCity(city=city)
@@ -235,7 +254,7 @@ class CraigsList:
     print(postCategorySelectResponse)
 
     # add post details
-    addPostDetailsResponse = self.addPostDetails(postTitle, postalCode, city, postDescription)
+    addPostDetailsResponse = self.addPostDetails(postType, postTitle, postalCode, city, postDescription, **kwargs)
     print(addPostDetailsResponse)
 
     # images part
@@ -245,7 +264,7 @@ class CraigsList:
       
       # submit only if image page is shown
       # prevents clicking Publish button
-      if imageBtn.text.find('image') >-1:
+      if imageBtn and imageBtn.text.find('image') >-1:
         imageBtn.click()
     except Exception as err:
       print('Error when skipping images: ', err)
