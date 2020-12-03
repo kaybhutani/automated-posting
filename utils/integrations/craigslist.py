@@ -145,7 +145,7 @@ class CraigsList:
     except Exception as error:
       print(error)
       return {'success': False, 'message': str(error)}
-  
+
 
   def selectPostType(self, postType):
     print('Selecting post type: ', postType)
@@ -169,6 +169,7 @@ class CraigsList:
       categories = self.driver.find_elements_by_tag_name('label')
         
       for category in categories:
+        print(category.text)
         if category.text.find(postCategory) > -1:
           category.click()
           break
@@ -220,7 +221,12 @@ class CraigsList:
     # images part
     # skipping image upload for now
     try:
-      self.driver.find_elements_by_name('go')[1].click()
+      imageBtn = self.driver.find_elements_by_name('go')[1]
+      
+      # submit only if image page is shown
+      # prevents clicking Publish button
+      if imageBtn.text.find('image') >-1:
+        imageBtn.click()
     except Exception as err:
       pass
     
